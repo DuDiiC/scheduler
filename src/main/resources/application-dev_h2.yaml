@@ -8,3 +8,10 @@ spring:
     driverClassName: org.h2.Driver
     username: 'sa'
     password: ''
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
