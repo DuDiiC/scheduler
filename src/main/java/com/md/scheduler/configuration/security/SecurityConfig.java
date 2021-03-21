@@ -14,6 +14,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().and()
                 .authorizeRequests()
+                .antMatchers("/swagger-ui/**").permitAll()
                 // h2 console
                 .antMatchers("/h2-database-console/**").permitAll()
                 // H2 console from browser

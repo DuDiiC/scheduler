@@ -1,3 +1,21 @@
 spring:
   main.banner-mode: off
   jpa.hibernate.ddl-auto: validate
+
+# swagger
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui
+    display-request-duration: true
+    groups-order: DESC
+    operations-sorter: method
+    disable-swagger-default-url: true
+  show-actuator: true
+#  group-configs:
+#  - group: group_name
+#    paths-to-match: /group_path/**
+#  - group: group_name
+#    paths-to-match: /group_path/**
