@@ -6,6 +6,7 @@ import com.md.scheduler.users.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -17,10 +18,10 @@ import java.io.IOException;
 class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private final JwtConfigProperties jwtConfigProperties;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
-                                   UserDetailsServiceImpl userDetailsService,
+                                   UserDetailsService userDetailsService,
                                    JwtConfigProperties jwtConfigProperties) {
         super(authenticationManager);
         this.jwtConfigProperties = jwtConfigProperties;
