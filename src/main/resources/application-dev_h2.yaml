@@ -8,7 +8,8 @@ spring:
     driverClassName: org.h2.Driver
     username: 'sa'
     password: ''
-
+hibernate:
+  dialect: org.hibernate.dialect.H2Dialect
 # actuator
 management:
   endpoints:
