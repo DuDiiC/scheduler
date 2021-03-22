@@ -41,6 +41,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and();
         http
                 .authorizeRequests()
+                // sign in/sign up
+                .antMatchers("/api/v1/login").permitAll()
                 // swagger
                 .antMatchers("/swagger-ui/**").permitAll()
                 // h2 console
