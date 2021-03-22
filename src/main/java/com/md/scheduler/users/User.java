@@ -20,13 +20,14 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private AppUserRole role;
     private boolean enabled;
 
     public User() {
     }
 
-    public User(String username, String password, String email, String role, boolean enabled) {
+    public User(String username, String password, String email, AppUserRole role, boolean enabled) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -48,10 +49,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role));
+        return role.getGrantedAuthorities();
     }
 
-    public String getRole() {
+    public AppUserRole getRole() {
         return role;
     }
 
