@@ -13,11 +13,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class UserAlreadyExistAuthenticationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
-    ResponseEntity<Object> handler(WebRequest request) {
+    ResponseEntity<Object> handler(UserAlreadyExistAuthenticationException e, WebRequest request) {
         return new ResponseEntity<>(
                         ApiException.builder()
                                 .type("/errors/user-already-exist")
-                                .title("User with selected username already exists")
+                                .title(e.getMessage())
                                 .status(HttpStatus.CONFLICT.value())
                                 .detail("Select other username, because your choice is already in use in our system")
                                 .instance(request.getDescription(false))
