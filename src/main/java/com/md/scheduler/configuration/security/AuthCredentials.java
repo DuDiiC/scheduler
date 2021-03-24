@@ -1,9 +1,8 @@
 package com.md.scheduler.configuration.security;
 
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
+@Getter
 class AuthCredentials {
 
     String username;
