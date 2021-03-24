@@ -2,6 +2,15 @@ spring:
   main.banner-mode: off
   jpa.hibernate.ddl-auto: validate
 
+# jwt
+# time in milisec (hour x 24 x 30 => month)
+jwt:
+  expirationTime: 2592000000
+  secret: 'kjnfi987832jklnf@!!ds)'
+  tokenHeader: 'Authorization'
+  tokenPrefix: 'Bearer '
+
+
 # swagger
 springdoc:
   api-docs:
