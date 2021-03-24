@@ -43,6 +43,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 // sign in/sign up
+                .antMatchers("/api/v1/register").permitAll()
                 .antMatchers("/api/v1/login").permitAll()
                 // swagger
                 .antMatchers("/swagger-ui/**").permitAll()
