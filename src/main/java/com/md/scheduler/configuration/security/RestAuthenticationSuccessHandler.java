@@ -27,9 +27,6 @@ class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + jwtConfigProperties.getExpirationTime()))
                 .sign(Algorithm.HMAC256(jwtConfigProperties.getSecret()));
-//        response.addHeader(jwtConfigProperties.getTokenHeader(), jwtConfigProperties.getTokenPrefix() + token); // version with set bearer in header
-//        response.getWriter().write(jwtConfigProperties.getTokenPrefix() + token); // version with bearer in response body
-//        response.getWriter().flush();
         response.setContentType("application/json");
         response.getWriter().print("""
                         {

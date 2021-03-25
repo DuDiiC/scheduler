@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class UserInfo {
 
-    private final Long id;
+    private final long id;
     private final String email;
     private final String username;
     private final AppUserRole role;
