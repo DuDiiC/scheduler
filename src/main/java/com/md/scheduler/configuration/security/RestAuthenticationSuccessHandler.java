@@ -31,6 +31,11 @@ class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 //        response.getWriter().write(jwtConfigProperties.getTokenPrefix() + token); // version with bearer in response body
 //        response.getWriter().flush();
         response.setContentType("application/json");
-        response.getWriter().print("{\"" + jwtConfigProperties.getTokenPrefix().replace(" ", "") + "\": \"" + token + "\"}");
+        response.getWriter().print("""
+                        {
+                            "%s": "%s"
+                        }
+                """.formatted(jwtConfigProperties.getTokenPrefix().replace(" ", ""), token)
+        );
     }
 }
