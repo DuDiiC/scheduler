@@ -2,6 +2,8 @@ package com.md.scheduler.users.registration;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Locale;
+import java.util.function.IntPredicate;
 
 class PasswordValidator implements ConstraintValidator<Password, String> {
 
@@ -25,6 +27,41 @@ class PasswordValidator implements ConstraintValidator<Password, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
-        return false;
+        if (minLength != 0 && value.length() < minLength) {
+            return false;
+        }
+        if (maxLength != 0 && value.length() > maxLength) {
+            return false;
+        }
+        if (uppercaseCharRequired && !stringContainsUppercaseChar(value)) {
+            return false;
+        }
+        if (lowercaseCharRequired && !stringContainsLowercaseChar(value)) {
+            return false;
+        }
+        if (digitRequired && !stringContainsDigit(value)) {
+            return false;
+        }
+        if (specialCharRequired && !stringContainsSpecialChar(value)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean stringContainsUppercaseChar(String value) {
+        return value.matches(".*[A-Z].*");
+    }
+
+    private boolean stringContainsLowercaseChar(String value) {
+        return value.matches(".*[a-z].*");
+    }
+
+    private boolean stringContainsDigit(String value) {
+        return value.matches(".*\\d.*");
+    }
+
+    private boolean stringContainsSpecialChar(String value) {
+        return value.matches(".*[!@#$%&*()_+=|<>?{}\\\\[\\\\]~-].*");
     }
 }
