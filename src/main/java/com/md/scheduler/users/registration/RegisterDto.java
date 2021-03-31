@@ -23,7 +23,9 @@ class RegisterDto {
             uppercaseCharRequired = true,
             lowercaseCharRequired = true,
             digitRequired = true,
-            specialCharRequired = true
+            specialCharRequired = true,
+            message = "The password must be 8-24 characters long, with at least one lowercase, " +
+                "one uppercase letter, one number and one special character"
     )
     String password;
 }
