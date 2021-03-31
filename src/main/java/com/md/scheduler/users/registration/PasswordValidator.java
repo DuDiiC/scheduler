@@ -2,8 +2,6 @@ package com.md.scheduler.users.registration;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Locale;
-import java.util.function.IntPredicate;
 
 class PasswordValidator implements ConstraintValidator<Password, String> {
 
