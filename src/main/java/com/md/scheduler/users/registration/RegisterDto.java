@@ -16,6 +16,14 @@ class RegisterDto {
             message = "Username must be in correct size (between 5 and 100 chars"
     )
     String username;
-    
+
+    @Password(
+            minLength = 8,
+            maxLength = 24,
+            uppercaseCharRequired = true,
+            lowercaseCharRequired = true,
+            digitRequired = true,
+            specialCharRequired = true
+    )
     String password;
 }
