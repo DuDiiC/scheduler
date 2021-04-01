@@ -22,7 +22,6 @@ class ApiException {
     private final String status;
     private final String message;
     private List<ApiSubException> details;
-    private final String debugMessage;
 
     public void addValidationExceptions(List<FieldError> fieldErrors) {
         fieldErrors.forEach(this::addValidationException);

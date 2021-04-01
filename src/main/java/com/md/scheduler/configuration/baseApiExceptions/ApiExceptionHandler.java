@@ -23,7 +23,6 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .message("Validation error")
-                .debugMessage(ex.getLocalizedMessage())
                 .build();
         validationException.addValidationException(ex.getBindingResult().getGlobalErrors());
         validationException.addValidationExceptions(ex.getBindingResult().getFieldErrors());
