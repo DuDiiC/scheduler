@@ -1,4 +1,4 @@
-package com.md.scheduler.configuration.exception;
+package com.md.scheduler.configuration.baseApiExceptions;
 
 import com.md.scheduler.users.registration.UserAlreadyExistAuthenticationException;
 import org.springframework.http.HttpHeaders;

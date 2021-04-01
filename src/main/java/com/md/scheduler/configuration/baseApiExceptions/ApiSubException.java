@@ -1,4 +1,4 @@
-package com.md.scheduler.configuration.exception;
+package com.md.scheduler.configuration.baseApiExceptions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
