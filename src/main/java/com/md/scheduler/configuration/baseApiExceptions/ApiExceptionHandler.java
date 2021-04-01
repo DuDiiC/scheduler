@@ -19,7 +19,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
-        ApiException validationException = ApiException.builder()
+        var validationException = ApiException.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .message("Validation error")
@@ -35,8 +35,25 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+
+        var entityNotFoundException = ApiException.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.toString())
+                .message(ex.getMessage())
+                .build();
+        entityNotFoundException.addEntityNotFoundExceptions(ex.getRejectedFields());
+
+        return new ResponseEntity<>(
+                entityNotFoundException,
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
-    ResponseEntity<Object> handler(UserAlreadyExistAuthenticationException ex, WebRequest request) {
+    ResponseEntity<Object> handler(UserAlreadyExistAuthenticationException ex) {
         return new ResponseEntity<>(
                 ApiException.builder()
                         .timestamp(LocalDateTime.now())
