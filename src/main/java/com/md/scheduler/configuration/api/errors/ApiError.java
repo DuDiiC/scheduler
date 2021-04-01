@@ -1,4 +1,4 @@
-package com.md.scheduler.configuration.baseApiExceptions;
+package com.md.scheduler.configuration.api.errors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,13 +15,13 @@ import java.util.Map;
 @Builder
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class ApiException {
+class ApiError {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:dd:ss")
     private final LocalDateTime timestamp;
     private final String status;
     private final String message;
-    private List<ApiSubException> details;
+    private List<ApiErrorDetails> details;
 
     public void addValidationExceptions(List<FieldError> fieldErrors) {
         fieldErrors.forEach(this::addValidationException);
@@ -35,7 +35,7 @@ class ApiException {
         rejectedValues.forEach(this::addEntityNotFoundException);
     }
 
-    private void addSubException(ApiSubException ex) {
+    private void addSubException(ApiErrorDetails ex) {
         if (this.details == null) {
             this.details = new ArrayList<>();
         }
@@ -43,11 +43,11 @@ class ApiException {
     }
 
     private void addValidationException(String object, String message) {
-        this.addSubException(new ApiValidationException(object, message));
+        this.addSubException(new ValidationErrorDetails(object, message));
     }
 
     private void addValidationException(String object, String field, Object rejectedValue, String message) {
-        this.addSubException(new ApiValidationException(object, field, rejectedValue, message));
+        this.addSubException(new ValidationErrorDetails(object, field, rejectedValue, message));
     }
 
     private void addValidationException(FieldError fieldError) {
@@ -67,6 +67,6 @@ class ApiException {
     }
 
     private void addEntityNotFoundException(String key, Object value) {
-        this.addSubException(new ApiEntityNotFoundException(key, value));
+        this.addSubException(new EntityNotFoundDetails(key, value));
     }
 }

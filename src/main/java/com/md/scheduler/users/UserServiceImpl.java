@@ -1,6 +1,6 @@
 package com.md.scheduler.users;
 
-import com.md.scheduler.configuration.baseApiExceptions.EntityNotFoundException;
+import com.md.scheduler.configuration.api.errors.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

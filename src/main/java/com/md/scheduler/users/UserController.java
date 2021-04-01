@@ -1,6 +1,6 @@
 package com.md.scheduler.users;
 
-import com.md.scheduler.configuration.baseApiExceptions.EntityNotFoundException;
+import com.md.scheduler.configuration.api.errors.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

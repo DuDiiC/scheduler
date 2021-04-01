@@ -1,4 +1,4 @@
-package com.md.scheduler.configuration.baseApiExceptions;
+package com.md.scheduler.configuration.api.errors;
 
 import com.md.scheduler.users.registration.UserAlreadyExistAuthenticationException;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
-        var validationException = ApiException.builder()
+        var validationException = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .message("Validation error")
@@ -37,7 +37,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
 
-        var entityNotFoundException = ApiException.builder()
+        var entityNotFoundException = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.toString())
                 .message(ex.getMessage())
@@ -54,7 +54,7 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
     ResponseEntity<Object> handler(UserAlreadyExistAuthenticationException ex) {
         return new ResponseEntity<>(
-                ApiException.builder()
+                ApiError.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.CONFLICT.toString())
                         .message(ex.getMessage())

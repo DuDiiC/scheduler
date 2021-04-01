@@ -1,4 +1,4 @@
-package com.md.scheduler.configuration.baseApiExceptions;
+package com.md.scheduler.configuration.api.errors;
 
 import java.util.HashMap;
 import java.util.Map;
