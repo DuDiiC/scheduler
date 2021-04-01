@@ -23,6 +23,14 @@ class ApiException {
     private List<ApiSubException> details;
     private final String debugMessage;
 
+    public void addValidationExceptions(List<FieldError> fieldErrors) {
+        fieldErrors.forEach(this::addValidationException);
+    }
+
+    public void addValidationException(List<ObjectError> objectErrors) {
+        objectErrors.forEach(this::addValidationException);
+    }
+
     private void addSubException(ApiSubException ex) {
         if (this.details == null) {
             this.details = new ArrayList<>();
@@ -30,4 +38,27 @@ class ApiException {
         details.add(ex);
     }
 
+    private void addValidationException(String object, String message) {
+        this.addSubException(new ApiValidationException(object, message));
+    }
+
+    private void addValidationException(String object, String field, Object rejectedValue, String message) {
+        this.addSubException(new ApiValidationException(object, field, rejectedValue, message));
+    }
+
+    private void addValidationException(FieldError fieldError) {
+        this.addValidationException(
+                fieldError.getObjectName(),
+                fieldError.getField(),
+                fieldError.getRejectedValue(),
+                fieldError.getDefaultMessage()
+        );
+    }
+
+    private void addValidationException(ObjectError objectError) {
+        this.addValidationException(
+                objectError.getObjectName(),
+                objectError.getDefaultMessage()
+        );
+    }
 }
