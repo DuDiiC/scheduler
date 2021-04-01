@@ -15,7 +15,6 @@ class UserControllerImpl implements UserController {
     private final UserService service;
 
     @Override
-    public ResponseEntity<?> getUser(Long id) {
         try {
             return ResponseEntity.ok(
                     new UserInfo(service.getById(id))
@@ -23,5 +22,6 @@ class UserControllerImpl implements UserController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    public ResponseEntity<?> getUser(Long id) throws EntityNotFoundException {
     }
 }
