@@ -10,6 +10,7 @@ import org.springframework.validation.ObjectError;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Builder
 @Getter
@@ -29,6 +30,10 @@ class ApiException {
 
     public void addValidationException(List<ObjectError> objectErrors) {
         objectErrors.forEach(this::addValidationException);
+    }
+
+    public void addEntityNotFoundExceptions(Map<String, Object> rejectedValues) {
+        rejectedValues.forEach(this::addEntityNotFoundException);
     }
 
     private void addSubException(ApiSubException ex) {
@@ -60,5 +65,9 @@ class ApiException {
                 objectError.getObjectName(),
                 objectError.getDefaultMessage()
         );
+    }
+
+    private void addEntityNotFoundException(String key, Object value) {
+        this.addSubException(new ApiEntityNotFoundException(key, value));
     }
 }

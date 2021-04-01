@@ -1,5 +1,6 @@
 package com.md.scheduler.users;
 
+import com.md.scheduler.configuration.baseApiExceptions.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,5 +12,5 @@ interface UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    ResponseEntity<?> getUser(@PathVariable Long id);
+    ResponseEntity<?> getUser(@PathVariable Long id) throws EntityNotFoundException;
 }
