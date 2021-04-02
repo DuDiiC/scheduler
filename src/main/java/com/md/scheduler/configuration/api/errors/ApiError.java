@@ -23,35 +23,35 @@ class ApiError {
     private final String message;
     private List<ApiErrorDetails> details;
 
-    public void addValidationExceptions(List<FieldError> fieldErrors) {
-        fieldErrors.forEach(this::addValidationException);
+    public void addValidationErrorDetails(List<FieldError> fieldErrors) {
+        fieldErrors.forEach(this::addValidationErrorDetail);
     }
 
-    public void addValidationException(List<ObjectError> objectErrors) {
-        objectErrors.forEach(this::addValidationException);
+    public void addValidationErrorDetail(List<ObjectError> objectErrors) {
+        objectErrors.forEach(this::addValidationErrorDetail);
     }
 
     public void addEntityNotFoundExceptions(Map<String, Object> rejectedValues) {
         rejectedValues.forEach(this::addEntityNotFoundException);
     }
 
-    private void addSubException(ApiErrorDetails ex) {
+    private void addErrorDetail(ApiErrorDetails ex) {
         if (this.details == null) {
             this.details = new ArrayList<>();
         }
         details.add(ex);
     }
 
-    private void addValidationException(String object, String message) {
-        this.addSubException(new ValidationErrorDetails(object, message));
+    private void addValidationErrorDetail(String object, String message) {
+        this.addErrorDetail(new ValidationErrorDetails(object, message));
     }
 
-    private void addValidationException(String object, String field, Object rejectedValue, String message) {
-        this.addSubException(new ValidationErrorDetails(object, field, rejectedValue, message));
+    private void addValidationErrorDetail(String object, String field, Object rejectedValue, String message) {
+        this.addErrorDetail(new ValidationErrorDetails(object, field, rejectedValue, message));
     }
 
-    private void addValidationException(FieldError fieldError) {
-        this.addValidationException(
+    private void addValidationErrorDetail(FieldError fieldError) {
+        this.addValidationErrorDetail(
                 fieldError.getObjectName(),
                 fieldError.getField(),
                 fieldError.getRejectedValue(),
@@ -59,14 +59,14 @@ class ApiError {
         );
     }
 
-    private void addValidationException(ObjectError objectError) {
-        this.addValidationException(
+    private void addValidationErrorDetail(ObjectError objectError) {
+        this.addValidationErrorDetail(
                 objectError.getObjectName(),
                 objectError.getDefaultMessage()
         );
     }
 
     private void addEntityNotFoundException(String key, Object value) {
-        this.addSubException(new EntityNotFoundDetails(key, value));
+        this.addErrorDetail(new EntityNotFoundDetails(key, value));
     }
 }

@@ -24,8 +24,8 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .message("Validation error")
                 .build();
-        validationException.addValidationException(ex.getBindingResult().getGlobalErrors());
-        validationException.addValidationExceptions(ex.getBindingResult().getFieldErrors());
+        validationException.addValidationErrorDetail(ex.getBindingResult().getGlobalErrors());
+        validationException.addValidationErrorDetails(ex.getBindingResult().getFieldErrors());
 
         return new ResponseEntity<>(
                 validationException,
