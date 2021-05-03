@@ -1,8 +1,9 @@
 package com.md.scheduler.configuration.api.errors;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter
+@Getter(value = AccessLevel.PACKAGE)
 class ValidationErrorDetails implements ApiErrorDetails {
 
     private final String object;
