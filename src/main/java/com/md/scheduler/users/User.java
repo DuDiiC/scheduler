@@ -1,5 +1,6 @@
 package com.md.scheduler.users;
 
+import com.md.scheduler.commons.BaseEntity;
 import com.md.scheduler.configuration.security.AppUserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,11 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity implements UserDetails {
 
     private String username;
     private String password;
@@ -32,10 +29,6 @@ public class User implements UserDetails {
         this.email = email;
         this.role = role;
         this.enabled = enabled;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getEmail() {
