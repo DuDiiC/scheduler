@@ -18,7 +18,15 @@ class ValidationErrorDetails implements ApiErrorDetails {
     public ValidationErrorDetails(String object, String field, Object rejectedValue, String message) {
         this.object = object;
         this.field = field;
-        this.rejectedValue = rejectedValue;
+        if (field.equals("password")) {
+            this.rejectedValue = hidePassword(rejectedValue.toString());
+        } else {
+            this.rejectedValue = rejectedValue;
+        }
         this.message = message;
+    }
+
+    private String hidePassword(String password) {
+        return "*".repeat(password.length());
     }
 }
