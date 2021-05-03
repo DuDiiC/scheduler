@@ -35,13 +35,13 @@ class RegisterServiceImpl implements RegisterService {
     }
 
     private void checkUsernameUnique(String username) throws UserAlreadyExistAuthenticationException {
-        if (repository.findByUsername(username).isPresent()) {
+        if (repository.existsByUsername(username)) {
             throw new UserAlreadyExistAuthenticationException("User with username " + username + " already exists");
         }
     }
 
     private void checkEmailUnique(String email) throws UserAlreadyExistAuthenticationException {
-        if (repository.findByEmail(email).isPresent()) {
+        if (repository.existsByEmail(email)) {
             throw new UserAlreadyExistAuthenticationException("User with email " + email + " already exists");
         }
     }
