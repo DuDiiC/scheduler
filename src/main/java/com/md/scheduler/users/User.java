@@ -14,7 +14,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String username;
     private String password;
@@ -34,7 +34,7 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
