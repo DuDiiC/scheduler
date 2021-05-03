@@ -14,7 +14,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String username;
     private String password;
@@ -34,7 +34,7 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -84,9 +84,9 @@ public class User implements UserDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-        return username.equals(user.username) && email.equals(user.email);
+        return username.equals(user.getUsername()) && email.equals(user.getEmail());
     }
 
     @Override
