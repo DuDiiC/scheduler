@@ -2,7 +2,6 @@ package com.md.scheduler.configuration.security;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,10 +27,10 @@ public enum AppUserRole {
     }
 
     public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
-        Set<SimpleGrantedAuthority> permissions = getPermissions().stream()
+        Set<SimpleGrantedAuthority> authorities = getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toSet());
-        permissions.add(new SimpleGrantedAuthority(this.name()));
-        return permissions;
+        authorities.add(new SimpleGrantedAuthority(this.name()));
+        return authorities;
     }
 }
