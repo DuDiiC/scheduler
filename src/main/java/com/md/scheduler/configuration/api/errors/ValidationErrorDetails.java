@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 class ValidationErrorDetails implements ApiErrorDetails {
 
-    private String object;
+    private final String object;
     private String field;
     private Object rejectedValue;
-    private String message;
+    private final String message;
 
     public ValidationErrorDetails(String object, String message) {
         this.object = object;
