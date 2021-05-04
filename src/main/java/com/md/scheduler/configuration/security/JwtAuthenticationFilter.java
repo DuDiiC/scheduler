@@ -2,7 +2,6 @@ package com.md.scheduler.configuration.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.md.scheduler.users.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +47,7 @@ class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                     .verify(token.replace(jwtConfigProperties.getTokenPrefix(), ""))
                     .getSubject();
             if(username != null) {
-                User userDetails = (User) userDetailsService.loadUserByUsername(username);
+                UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(username);
                 return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getAuthorities(), userDetails.getAuthorities());
             }
         }
