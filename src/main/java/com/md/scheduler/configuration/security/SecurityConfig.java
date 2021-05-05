@@ -69,6 +69,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         authFilter.setAuthenticationSuccessHandler(authSuccessHandler);
         authFilter.setAuthenticationFailureHandler(authFailureHandler);
         authFilter.setAuthenticationManager(super.authenticationManager());
+        authFilter.setFilterProcessesUrl("/api/v1/login");
         return authFilter;
     }
 }
