@@ -2,6 +2,9 @@ package com.md.scheduler.users;
 
 import com.md.scheduler.commons.BaseEntity;
 import com.md.scheduler.configuration.security.AppUserRole;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +14,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter(value = AccessLevel.PACKAGE)
 public class User extends BaseEntity {
 
     private String username;
@@ -29,26 +34,6 @@ public class User extends BaseEntity {
         this.email = email;
         this.role = role;
         this.enabled = enabled;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public AppUserRole getRole() {
-        return role;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 
     @Override
