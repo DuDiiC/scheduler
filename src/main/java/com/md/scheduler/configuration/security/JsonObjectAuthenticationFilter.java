@@ -2,6 +2,7 @@ package com.md.scheduler.configuration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,7 +32,7 @@ class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new AuthenticationCredentialsNotFoundException("JSON with credentials is not valid");
         }
     }
 }
