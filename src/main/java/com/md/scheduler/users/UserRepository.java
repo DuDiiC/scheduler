@@ -13,4 +13,6 @@ public interface UserRepository {
     boolean existsByEmail(String email);
 
     User save(User user);
+
+    void delete(User entity);
 }

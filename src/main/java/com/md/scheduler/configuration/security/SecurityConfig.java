@@ -33,7 +33,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
     }
 
     @Override
@@ -69,6 +69,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         authFilter.setAuthenticationSuccessHandler(authSuccessHandler);
         authFilter.setAuthenticationFailureHandler(authFailureHandler);
         authFilter.setAuthenticationManager(super.authenticationManager());
+        authFilter.setFilterProcessesUrl("/api/v1/login");
         return authFilter;
     }
 }
