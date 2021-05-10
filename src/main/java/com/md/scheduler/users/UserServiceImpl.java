@@ -12,10 +12,11 @@ class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
-    public User getById(long id) throws EntityNotFoundException {
-        return repository.findById(id)
+    public UserInfo getById(long id) throws EntityNotFoundException {
+        return new UserInfo(repository.findById(id)
                 .orElseThrow(() ->
                         new EntityNotFoundException(User.class, Map.of("id", id))
-                );
+                )
+        );
     }
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.net.URI;
 
 @RestController
@@ -13,7 +14,7 @@ class RegisterControllerImpl implements RegisterController {
 
     private final RegisterService registerService;
 
-    public ResponseEntity<?> register(RegisterDto newUser) throws UserAlreadyExistAuthenticationException {
+    public ResponseEntity<Serializable> register(NewUser newUser) throws UserAlreadyExistAuthenticationException {
         UserInfo registeredUser = registerService.register(newUser);
         return ResponseEntity
                 .created(URI.create("/users/" + registeredUser.getId()))

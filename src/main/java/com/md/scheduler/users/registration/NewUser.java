@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-class RegisterDto {
+class NewUser {
 
     @NotNull(message = "email is required")
     @Email(message = "email must be in correct format")
@@ -26,11 +26,9 @@ class RegisterDto {
             min = 8, max = 24,
             message = "password must be 8-24 characters long"
     )
-    @Pattern.List({
-            @Pattern(regexp = ".*[a-z].*", message = "password must contains at least one lowercase"),
-            @Pattern(regexp = ".*[A-Z].*", message = "password must contains at least one lowercase"),
-            @Pattern(regexp = ".*\\d.*", message = "password must contains at least one digit"),
-            @Pattern(regexp = ".*[!@#$%&*()_+=|<>?{}\\\\[\\\\]~-].*", message = "password must contains at least one special character")
-    })
+    @Pattern(regexp = ".*[a-z].*", message = "password must contains at least one lowercase")
+    @Pattern(regexp = ".*[A-Z].*", message = "password must contains at least one lowercase")
+    @Pattern(regexp = ".*\\d.*", message = "password must contains at least one digit")
+    @Pattern(regexp = ".*[!@#$%&*()_+=|<>?{}\\\\[\\\\]~-].*", message = "password must contains at least one special character")
     String password;
 }

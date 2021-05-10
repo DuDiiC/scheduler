@@ -14,12 +14,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable, Persistable<Long> {
+public abstract class BaseEntity<ID extends Serializable> implements Serializable, Persistable<ID> {
 
     @Setter(value = AccessLevel.PRIVATE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    protected ID id;
 
     protected Instant createdOn;
 
@@ -31,13 +31,13 @@ public abstract class BaseEntity implements Serializable, Persistable<Long> {
     }
 
     @PrePersist
-    private void prePersist() {
+    void prePersist() {
         this.createdOn = Instant.now();
         this.updatedOn = Instant.now();
     }
 
     @PreUpdate
-    private void preMerge() {
+    void preMerge() {
         this.updatedOn = Instant.now();
     }
 
@@ -46,7 +46,7 @@ public abstract class BaseEntity implements Serializable, Persistable<Long> {
         if (this == o) return true;
         if (o == null || Hibernate.unproxy(this).getClass() != Hibernate.unproxy(o).getClass())
             return false;
-        BaseEntity that = (BaseEntity) o;
+        BaseEntity<ID> that = (BaseEntity<ID>) o;
         return Objects.equals(getId(), that.getId());
     }
 
