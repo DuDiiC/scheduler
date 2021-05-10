@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter(value = AccessLevel.PACKAGE)
-public class User extends BaseEntity {
+public class User extends BaseEntity<Long> {
 
     private String username;
     private String password;
