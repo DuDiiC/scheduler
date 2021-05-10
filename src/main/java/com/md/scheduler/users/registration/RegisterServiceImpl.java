@@ -1,6 +1,6 @@
 package com.md.scheduler.users.registration;
 
-import com.md.scheduler.configuration.security.AppUserRole;
+import com.md.scheduler.configuration.security.enums.AppUserRole;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserInfo;
 import com.md.scheduler.users.UserRepository;

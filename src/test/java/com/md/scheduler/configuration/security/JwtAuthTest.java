@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.md.scheduler.configuration.security.enums.AppUserRole;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserRepository;
 import org.junit.jupiter.api.BeforeAll;

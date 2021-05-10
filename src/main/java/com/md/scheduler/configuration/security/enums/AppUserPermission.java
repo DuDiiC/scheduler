@@ -1,6 +1,6 @@
-package com.md.scheduler.configuration.security;
+package com.md.scheduler.configuration.security.enums;
 
-enum AppUserPermission {
+public enum AppUserPermission {
 
     USER_READ("user:read"),
     USER_WRITE("user:write"),

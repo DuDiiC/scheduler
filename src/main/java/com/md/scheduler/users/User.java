@@ -1,7 +1,7 @@
 package com.md.scheduler.users;
 
 import com.md.scheduler.commons.BaseEntity;
-import com.md.scheduler.configuration.security.AppUserRole;
+import com.md.scheduler.configuration.security.enums.AppUserRole;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

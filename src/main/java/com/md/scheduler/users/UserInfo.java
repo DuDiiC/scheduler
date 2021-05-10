@@ -1,6 +1,6 @@
 package com.md.scheduler.users;
 
-import com.md.scheduler.configuration.security.AppUserRole;
+import com.md.scheduler.configuration.security.enums.AppUserRole;
 import lombok.Getter;
 
 @Getter
