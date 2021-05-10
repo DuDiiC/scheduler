@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-class RegisterDto {
+class NewUser {
 
     @NotNull(message = "email is required")
     @Email(message = "email must be in correct format")

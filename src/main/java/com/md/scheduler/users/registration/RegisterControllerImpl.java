@@ -14,7 +14,7 @@ class RegisterControllerImpl implements RegisterController {
 
     private final RegisterService registerService;
 
-    public ResponseEntity<Serializable> register(RegisterDto newUser) throws UserAlreadyExistAuthenticationException {
+    public ResponseEntity<Serializable> register(NewUser newUser) throws UserAlreadyExistAuthenticationException {
         UserInfo registeredUser = registerService.register(newUser);
         return ResponseEntity
                 .created(URI.create("/users/" + registeredUser.getId()))

@@ -12,5 +12,5 @@ import java.io.Serializable;
 interface RegisterController {
 
     @PostMapping("/register")
-    ResponseEntity<Serializable> register(@RequestBody @Valid RegisterDto newUser) throws UserAlreadyExistAuthenticationException;
+    ResponseEntity<Serializable> register(@RequestBody @Valid NewUser newUser) throws UserAlreadyExistAuthenticationException;
 }

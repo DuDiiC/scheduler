@@ -18,7 +18,7 @@ class RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserInfo register(RegisterDto newUser) throws UserAlreadyExistAuthenticationException {
+    public UserInfo register(NewUser newUser) throws UserAlreadyExistAuthenticationException {
         checkUserUnique(newUser);
 
         return new UserInfo(
@@ -32,9 +32,9 @@ class RegisterService {
         );
     }
 
-    private void checkUserUnique(RegisterDto user) throws UserAlreadyExistAuthenticationException {
-        checkUsernameUnique(user.username);
-        checkEmailUnique(user.email);
+    private void checkUserUnique(NewUser newUser) throws UserAlreadyExistAuthenticationException {
+        checkUsernameUnique(newUser.username);
+        checkEmailUnique(newUser.email);
     }
 
     private void checkUsernameUnique(String username) throws UserAlreadyExistAuthenticationException {
