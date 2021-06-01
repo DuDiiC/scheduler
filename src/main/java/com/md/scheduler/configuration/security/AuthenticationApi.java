@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/login")
 @Tag(name = "login")
-class LoginController {
+class AuthenticationApi {
 
     @PostMapping
     public BearerToken login(@RequestBody AuthCredentials authCredentials){
