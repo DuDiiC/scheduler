@@ -63,4 +63,17 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(EnumValueNotFoundException.class)
+    ResponseEntity<Object> handler(EnumValueNotFoundException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }
