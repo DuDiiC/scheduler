@@ -103,4 +103,17 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.FORBIDDEN
         );
     }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    ResponseEntity<Object> handler(ResourceAlreadyExistsException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.CONFLICT.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.CONFLICT
+        );
+    }
 }
