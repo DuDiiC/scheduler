@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +18,10 @@ import java.util.Objects;
 @Getter
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor
-class Schedule extends BaseEntity<Long> {
+public class Schedule extends BaseEntity<Long> {
+
+    @Serial
+    private static final long serialVersionUID = 3921081254041059580L;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")

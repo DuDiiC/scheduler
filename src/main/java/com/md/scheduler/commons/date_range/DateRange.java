@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Embeddable;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Embeddable
@@ -11,7 +13,10 @@ import java.time.LocalDate;
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class DateRange {
+public class DateRange implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7255235043854373096L;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startOfRange;

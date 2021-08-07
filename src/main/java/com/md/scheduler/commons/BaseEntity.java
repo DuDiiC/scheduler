@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -15,6 +16,9 @@ import java.util.Objects;
 @Setter
 @MappedSuperclass
 public abstract class BaseEntity<ID extends Serializable> implements Serializable, Persistable<ID> {
+
+    @Serial
+    private static final long serialVersionUID = -7588153239202434306L;
 
     @Setter(value = AccessLevel.PRIVATE)
     @Id
