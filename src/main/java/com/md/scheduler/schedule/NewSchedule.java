@@ -9,6 +9,7 @@ class NewSchedule {
 
     private String name;
     private String description;
+    @ValidDateRange
     private DateRange dateRange;
     private String status;
 }
