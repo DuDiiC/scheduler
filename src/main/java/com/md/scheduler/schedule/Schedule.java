@@ -2,6 +2,7 @@ package com.md.scheduler.schedule;
 
 import com.md.scheduler.commons.BaseEntity;
 import com.md.scheduler.commons.date_range.DateRange;
+import com.md.scheduler.configuration.api.errors.EnumValueNotFoundException;
 import com.md.scheduler.users.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,6 +35,15 @@ class Schedule extends BaseEntity<Long> {
 
     @Embedded
     private ScheduleImage image;
+
+    public Schedule(NewSchedule newSchedule, User owner) {
+        this.name = newSchedule.getName();
+        this.description = newSchedule.getDescription();
+        this.dateRange = newSchedule.getDateRange();
+        this.status = ScheduleStatus.fromName(newSchedule.getStatus()).orElseThrow(() -> new EnumValueNotFoundException(newSchedule.getStatus()));
+        this.image = new ScheduleImage("default");
+        this.owner = owner;
+    }
 
     @Override
     public boolean equals(Object o) {
