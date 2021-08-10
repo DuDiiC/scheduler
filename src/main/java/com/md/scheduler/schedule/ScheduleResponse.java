@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
+@Schema(description = "An object that responds to all simple requests about schedules.")
 class ScheduleResponse {
 
     @Schema(description = "It is exactly what you expect.", example = "1")

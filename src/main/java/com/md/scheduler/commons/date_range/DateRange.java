@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "An object with a selected date range.")
 public class DateRange implements Serializable {
 
     @Serial
