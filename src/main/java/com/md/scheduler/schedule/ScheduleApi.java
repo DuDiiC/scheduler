@@ -3,6 +3,7 @@ package com.md.scheduler.schedule;
 import com.md.scheduler.configuration.api.errors.ApiError;
 import com.md.scheduler.configuration.api.errors.EntityNotFoundException;
 import com.md.scheduler.configuration.api.errors.ResourceAlreadyExistsException;
+import com.md.scheduler.configuration.swagger.PageableParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,8 @@ interface ScheduleApi {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "403", description = "Operation available only for the administrator.",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
-    List<ScheduleResponse> getAll();
+    @PageableParameter
+    List<ScheduleResponse> getAll(@Parameter(hidden = true) Pageable pageable);
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
