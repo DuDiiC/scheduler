@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 @Parameter(in = ParameterIn.QUERY
         , description = "The size of the page to be returned"
         , name = "size"
-        , content = @Content(schema = @Schema(type = "integer", defaultValue = "20")))
+        , content = @Content(schema = @Schema(type = "integer", defaultValue = "10")))
 @Parameter(in = ParameterIn.QUERY
         , description = "Sorting criteria in the format: property(,asc|desc). "
         + "Default sort order is ascending. " + "Multiple sort criteria are supported."
