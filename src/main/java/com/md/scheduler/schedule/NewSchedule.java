@@ -3,12 +3,14 @@ package com.md.scheduler.schedule;
 import com.md.scheduler.commons.date_range.DateRange;
 import com.md.scheduler.commons.date_range.ValidDateRange;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@AllArgsConstructor
 @Schema(description = "Object sent to create a new schedule.")
 class NewSchedule {
 
