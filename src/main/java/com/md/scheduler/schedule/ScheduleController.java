@@ -25,7 +25,7 @@ class ScheduleController implements ScheduleApi {
     @Override
     public ScheduleResponse getById(Long id, Principal principal)
             throws EntityNotFoundException, UsernameNotFoundException, AccessDeniedException {
-        return null;
+        return scheduleService.getById(id, principal.getName());
     }
 
     @Override
