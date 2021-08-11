@@ -61,7 +61,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userDetailsService, jwtConfigProperties))
                 // handling exceptions
                 .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+                .accessDeniedHandler(new RestAccessDeniedHandler(mapper))
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint(mapper));
     }
 
     JsonObjectAuthenticationFilter authenticationFilter() throws Exception {

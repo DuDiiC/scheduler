@@ -4,6 +4,7 @@ import com.md.scheduler.users.registration.UserAlreadyExistAuthenticationExcepti
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -91,19 +91,6 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    ResponseEntity<Object> handler(AccessDeniedException ex) {
-        return new ResponseEntity<>(
-                ApiError.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.FORBIDDEN.toString())
-                        .message(ex.getMessage())
-                        .build(),
-                new HttpHeaders(),
-                HttpStatus.FORBIDDEN
-        );
-    }
-
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     ResponseEntity<Object> handler(ResourceAlreadyExistsException ex) {
         return new ResponseEntity<>(
@@ -114,6 +101,19 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         .build(),
                 new HttpHeaders(),
                 HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    ResponseEntity<Object> handler(AuthenticationException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.UNAUTHORIZED.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.UNAUTHORIZED
         );
     }
 }
