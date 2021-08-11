@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import java.io.Serial;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,9 @@ import java.util.Objects;
 @Getter
 @Setter(value = AccessLevel.PACKAGE)
 public class User extends BaseEntity<Long> {
+
+    @Serial
+    private static final long serialVersionUID = -1472094900117904371L;
 
     private String username;
     private String password;

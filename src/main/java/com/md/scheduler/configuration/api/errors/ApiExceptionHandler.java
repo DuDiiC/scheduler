@@ -4,6 +4,8 @@ import com.md.scheduler.users.registration.UserAlreadyExistAuthenticationExcepti
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,7 +20,6 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-
         var validationException = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.toString())
@@ -61,6 +62,58 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         .build(),
                 new HttpHeaders(),
                 HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(EnumValueNotFoundException.class)
+    ResponseEntity<Object> handler(EnumValueNotFoundException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    ResponseEntity<Object> handler(UsernameNotFoundException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    ResponseEntity<Object> handler(ResourceAlreadyExistsException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.CONFLICT.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    ResponseEntity<Object> handler(AuthenticationException ex) {
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.UNAUTHORIZED.toString())
+                        .message(ex.getMessage())
+                        .build(),
+                new HttpHeaders(),
+                HttpStatus.UNAUTHORIZED
         );
     }
 }
