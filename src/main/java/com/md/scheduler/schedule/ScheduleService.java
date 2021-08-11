@@ -1,6 +1,7 @@
 package com.md.scheduler.schedule;
 
 import com.md.scheduler.configuration.api.errors.EntityNotFoundException;
+import com.md.scheduler.configuration.api.errors.ResourceAlreadyExistsException;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,21 @@ class ScheduleService {
         } else {
             throw new AccessDeniedException("Only owner can delete schedule");
         }
+    }
+
+    ScheduleResponse save(NewSchedule newSchedule, String ownerName)
+            throws UsernameNotFoundException, ResourceAlreadyExistsException {
+        User owner = userRepository.findByUsername(ownerName)
+                .orElseThrow(() -> new UsernameNotFoundException(ownerName));
+
+        if (scheduleAlreadyExists(newSchedule, owner)) {
+            throw new ResourceAlreadyExistsException("User " + ownerName + " already has a schedule with this name");
+        }
+        return new ScheduleResponse(commandRepository.save(new Schedule(newSchedule, owner)));
+    }
+
+    private boolean scheduleAlreadyExists(NewSchedule newSchedule, User owner) {
+        return queryRepository.existsByNameAndOwner(newSchedule.getName(), owner);
     }
 
     private boolean userIsScheduleOwner(Schedule schedule, User user) {

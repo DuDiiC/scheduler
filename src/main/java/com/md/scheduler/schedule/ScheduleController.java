@@ -31,7 +31,7 @@ class ScheduleController implements ScheduleApi {
     @Override
     public ScheduleResponse save(NewSchedule newSchedule, Principal principal)
             throws UsernameNotFoundException, ResourceAlreadyExistsException {
-        return null;
+        return scheduleService.save(newSchedule, principal.getName());
     }
 
     @Override
