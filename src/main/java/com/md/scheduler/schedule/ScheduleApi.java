@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.List;
 
@@ -53,9 +54,8 @@ interface ScheduleApi {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "404", description = "The object with the specified ID does not exist in the system.",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
-    ScheduleResponse getById(
-            @PathVariable @Parameter(description = "Schedule ID to fetch.", example = "1") Long id, Principal principal
-    ) throws EntityNotFoundException, UsernameNotFoundException, AccessDeniedException;
+    ScheduleResponse getById(@PathVariable @Parameter(description = "Schedule ID to fetch.", example = "1") Long id, @NotNull Principal principal)
+            throws EntityNotFoundException, UsernameNotFoundException, AccessDeniedException;
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
@@ -76,8 +76,8 @@ interface ScheduleApi {
             @RequestBody @Valid @Parameter(
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = NewSchedule.class)),
                     description = "New schedule to create."
-            ) NewSchedule newSchedule,
-            Principal principal) throws ResourceAlreadyExistsException;
+            ) NewSchedule newSchedule, @NotNull Principal principal
+    ) throws ResourceAlreadyExistsException;
 
     @DeleteMapping("{id}")
     @PreAuthorize("isAuthenticated()")
@@ -91,7 +91,6 @@ interface ScheduleApi {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "404", description = "The object with the specified ID does not exist in the system.",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
-    void delete(
-            @PathVariable @Parameter(description = "Schedule ID to remove.", example = "1") Long id, Principal principal
-    ) throws EntityNotFoundException, AccessDeniedException;
+    void delete(@PathVariable @Parameter(description = "Schedule ID to remove.", example = "1") Long id, @NotNull Principal principal)
+            throws EntityNotFoundException, AccessDeniedException;
 }
