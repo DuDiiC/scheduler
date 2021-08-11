@@ -37,5 +37,6 @@ class ScheduleController implements ScheduleApi {
     @Override
     public void delete(Long id, Principal principal)
             throws UsernameNotFoundException, EntityNotFoundException, AccessDeniedException {
+        scheduleService.delete(id, principal.getName());
     }
 }

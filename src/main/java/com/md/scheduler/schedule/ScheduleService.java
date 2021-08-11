@@ -54,6 +54,21 @@ class ScheduleService {
         return new ScheduleResponse(commandRepository.save(new Schedule(newSchedule, owner)));
     }
 
+    void delete(Long id, String ownerName)
+            throws UsernameNotFoundException, EntityNotFoundException, AccessDeniedException {
+        User owner = userRepository.findByUsername(ownerName)
+                .orElseThrow(() -> new UsernameNotFoundException(ownerName));
+        Schedule scheduleToDelete = queryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        Schedule.class, Map.of("id", id)));
+
+        if (userIsScheduleOwner(scheduleToDelete, owner)) {
+            commandRepository.delete(scheduleToDelete);
+        } else {
+            throw new AccessDeniedException("Only owner can delete schedule");
+        }
+    }
+
     private boolean scheduleAlreadyExists(NewSchedule newSchedule, User owner) {
         return queryRepository.existsByNameAndOwner(newSchedule.getName(), owner);
     }
