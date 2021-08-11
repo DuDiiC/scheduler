@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -54,7 +55,7 @@ interface ScheduleApi {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     ScheduleResponse getById(
             @PathVariable @Parameter(description = "Schedule ID to fetch.", example = "1") Long id, Principal principal
-    ) throws EntityNotFoundException;
+    ) throws EntityNotFoundException, UsernameNotFoundException, AccessDeniedException;
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
