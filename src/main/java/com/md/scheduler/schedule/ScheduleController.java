@@ -19,7 +19,7 @@ class ScheduleController implements ScheduleApi {
 
     @Override
     public List<ScheduleResponse> getAll(Pageable pageable) {
-        return null;
+        return scheduleService.getAll(pageable);
     }
 
     @Override
