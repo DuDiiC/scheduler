@@ -4,10 +4,7 @@ import com.md.scheduler.commons.date_range.DateRange;
 import com.md.scheduler.configuration.security.enums.AppUserRole;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -79,66 +76,6 @@ class ScheduleServiceTest {
         );
     }
 
-    @Test
-    @DisplayName("ScheduleService#getAll(): Should return all schedules when getting all")
-    void shouldReturnAllSchedules_whenGettingAll() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#getById(): Should return schedule by ID for owner")
-    void shouldReturnScheduleById_whenOwnerSentRequest() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#getById(): Should throw EntityNotFoundException when schedule does not exist")
-    void shouldThrowEntityNotFound_whenScheduleToGetDoesNotExist() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#getById(): Should throw UsernameNotFoundException when potential owner does not exist")
-    void shouldThrowUsernameNotFound_whenPotentialOwnerOfExistingScheduleDoesNotExist() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#getById(): Should throw AccessDeniedException when a user other than the owner sent the request")
-    void shouldThrowAccessDenied_whenNonOwnerSentGetByIdRequest() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#save() - Should create new schedule based on DTO and owner name")
-    void shouldCreateNewSchedule_whenNewScheduleAndOwnerName() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#save() - Should throw UsernameNotFoundException when potential owner does not exist")
-    void shouldThrowUsernameNotFound_whenPotentialOwnerOfNewScheduleDoesNotExist() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#save() - Should throw ResourceAlreadyExistException when selected user already has a schedule with selected name")
-    void shouldThrowResourceAlreadyExist_whenPotentialNewScheduleAlreadyExist() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#delete() - Should remove selected schedule when the owner sends the request")
-    void shouldDeleteScheduleWhenOwnerSendsRequest() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#delete() - Should throw UsernameNotFoundException when potential owner does not exist")
-    void shouldThrowUsernameNotFound_whenPotentialOwnerOfScheduleToDeleteDoesNotExist() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#delete() - Should throw EntityNotFoundException when schedule to delete does not exist")
-    void shouldThrowUsernameNotFound_whenScheduleToDeleteDoesNotExist() {
-    }
-
-    @Test
-    @DisplayName("ScheduleService#delete() - Should throw AccessDeniedException when a user other than the owner sent the request")
-    void shouldThrowAccessDenied_whenNonOwnerSentDeleteRequest() {
-    }
-
     @AfterEach
     void tearDown() {
         newSchedule = null;
@@ -146,5 +83,75 @@ class ScheduleServiceTest {
         schedule2 = null;
         scheduleOwner = null;
         anotherUser = null;
+    }
+
+    @Nested
+    @DisplayName("Tests for queries")
+    class ScheduleServiceQueriesTest {
+
+        @Test
+        @DisplayName("ScheduleService#getAll(): Should return all schedules when getting all")
+        void shouldReturnAllSchedules_whenGettingAll() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#getById(): Should return schedule by ID for owner")
+        void shouldReturnScheduleById_whenOwnerSentRequest() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#getById(): Should throw EntityNotFoundException when schedule does not exist")
+        void shouldThrowEntityNotFound_whenScheduleToGetDoesNotExist() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#getById(): Should throw UsernameNotFoundException when potential owner does not exist")
+        void shouldThrowUsernameNotFound_whenPotentialOwnerOfExistingScheduleDoesNotExist() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#getById(): Should throw AccessDeniedException when a user other than the owner sent the request")
+        void shouldThrowAccessDenied_whenNonOwnerSentGetByIdRequest() {
+        }
+    }
+
+    @Nested
+    @DisplayName("Tests for commands")
+    class ScheduleServiceCommandsTest {
+
+        @Test
+        @DisplayName("ScheduleService#save() - Should create new schedule based on DTO and owner name")
+        void shouldCreateNewSchedule_whenNewScheduleAndOwnerName() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#save() - Should throw UsernameNotFoundException when potential owner does not exist")
+        void shouldThrowUsernameNotFound_whenPotentialOwnerOfNewScheduleDoesNotExist() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#save() - Should throw ResourceAlreadyExistException when selected user already has a schedule with selected name")
+        void shouldThrowResourceAlreadyExist_whenPotentialNewScheduleAlreadyExist() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#delete() - Should remove selected schedule when the owner sends the request")
+        void shouldDeleteScheduleWhenOwnerSendsRequest() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#delete() - Should throw UsernameNotFoundException when potential owner does not exist")
+        void shouldThrowUsernameNotFound_whenPotentialOwnerOfScheduleToDeleteDoesNotExist() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#delete() - Should throw EntityNotFoundException when schedule to delete does not exist")
+        void shouldThrowUsernameNotFound_whenScheduleToDeleteDoesNotExist() {
+        }
+
+        @Test
+        @DisplayName("ScheduleService#delete() - Should throw AccessDeniedException when a user other than the owner sent the request")
+        void shouldThrowAccessDenied_whenNonOwnerSentDeleteRequest() {
+        }
     }
 }
