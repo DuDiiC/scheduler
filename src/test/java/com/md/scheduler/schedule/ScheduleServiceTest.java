@@ -6,6 +6,8 @@ import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -75,6 +77,66 @@ class ScheduleServiceTest {
                 dateRange,
                 "active"
         );
+    }
+
+    @Test
+    @DisplayName("ScheduleService#getAll(): Should return all schedules when getting all")
+    void shouldReturnAllSchedules_whenGettingAll() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#getById(): Should return schedule by ID for owner")
+    void shouldReturnScheduleById_whenOwnerSentRequest() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#getById(): Should throw EntityNotFoundException when schedule does not exist")
+    void shouldThrowEntityNotFound_whenScheduleToGetDoesNotExist() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#getById(): Should throw UsernameNotFoundException when potential owner does not exist")
+    void shouldThrowUsernameNotFound_whenPotentialOwnerOfExistingScheduleDoesNotExist() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#getById(): Should throw AccessDeniedException when a user other than the owner sent the request")
+    void shouldThrowAccessDenied_whenNonOwnerSentGetByIdRequest() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#save() - Should create new schedule based on DTO and owner name")
+    void shouldCreateNewSchedule_whenNewScheduleAndOwnerName() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#save() - Should throw UsernameNotFoundException when potential owner does not exist")
+    void shouldThrowUsernameNotFound_whenPotentialOwnerOfNewScheduleDoesNotExist() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#save() - Should throw ResourceAlreadyExistException when selected user already has a schedule with selected name")
+    void shouldThrowResourceAlreadyExist_whenPotentialNewScheduleAlreadyExist() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#delete() - Should remove selected schedule when the owner sends the request")
+    void shouldDeleteScheduleWhenOwnerSendsRequest() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#delete() - Should throw UsernameNotFoundException when potential owner does not exist")
+    void shouldThrowUsernameNotFound_whenPotentialOwnerOfScheduleToDeleteDoesNotExist() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#delete() - Should throw EntityNotFoundException when schedule to delete does not exist")
+    void shouldThrowUsernameNotFound_whenScheduleToDeleteDoesNotExist() {
+    }
+
+    @Test
+    @DisplayName("ScheduleService#delete() - Should throw AccessDeniedException when a user other than the owner sent the request")
+    void shouldThrowAccessDenied_whenNonOwnerSentDeleteRequest() {
     }
 
     @AfterEach
