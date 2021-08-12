@@ -29,7 +29,8 @@ class ScheduleServiceTest {
     private ScheduleCommandRepository commandRepository;
 
     private Schedule schedule1, schedule2;
-    private User scheduleOwner;
+    private NewSchedule newSchedule;
+    private User scheduleOwner, anotherUser;
 
     @BeforeEach
     void setUp() {
@@ -44,29 +45,44 @@ class ScheduleServiceTest {
                 AppUserRole.ROLE_USER,
                 true
         );
+        anotherUser = new User(
+                "user",
+                "password",
+                "email",
+                AppUserRole.ROLE_USER,
+                true
+        );
         schedule1 = new Schedule(
                 new NewSchedule(
-                    "schedule name 1",
-                    "schedule desc 1",
-                    dateRange,
-                    "active"
+                        "schedule name 1",
+                        "schedule desc 1",
+                        dateRange,
+                        "active"
                 ),
                 scheduleOwner
         );
         schedule2 = new Schedule(
                 new NewSchedule(
-                    "schedule name 2",
-                    "schedule desc 2",
-                    dateRange,
-                    "active"),
+                        "schedule name 2",
+                        "schedule desc 2",
+                        dateRange,
+                        "active"),
                 scheduleOwner
+        );
+        newSchedule = new NewSchedule(
+                "schedule name",
+                "schedule desc",
+                dateRange,
+                "active"
         );
     }
 
     @AfterEach
     void tearDown() {
+        newSchedule = null;
         schedule1 = null;
         schedule2 = null;
         scheduleOwner = null;
+        anotherUser = null;
     }
 }
