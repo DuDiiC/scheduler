@@ -2,11 +2,13 @@ package com.md.scheduler.schedule;
 
 import com.md.scheduler.commons.date_range.DateRange;
 import com.md.scheduler.configuration.api.errors.EntityNotFoundException;
+import com.md.scheduler.configuration.api.errors.ResourceAlreadyExistsException;
 import com.md.scheduler.configuration.security.enums.AppUserRole;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -161,36 +163,85 @@ class ScheduleServiceTest {
         @Test
         @DisplayName("ScheduleService#save() - Should create new schedule based on DTO and owner name")
         void shouldCreateNewSchedule_whenNewScheduleAndOwnerName() {
+            when(userRepository.findByUsername(scheduleOwner.getUsername()))
+                    .thenReturn(Optional.of(scheduleOwner));
+            when(queryRepository.existsByNameAndOwner(anyString(), any(User.class)))
+                    .thenReturn(false);
+            when(commandRepository.save(any(Schedule.class)))
+                    .thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+            ScheduleResponse response = service.save(newSchedule, scheduleOwner.getUsername());
+            assertAll(
+                    () -> assertEquals(newSchedule.getName(), response.getName()),
+                    () -> assertEquals(newSchedule.getDescription(), response.getDescription()),
+                    () -> assertEquals(newSchedule.getStatus(), response.getStatus()),
+                    () -> assertEquals(newSchedule.getDateRange(), response.getDateRange()),
+                    () -> assertEquals(scheduleOwner.getUsername(), response.getOwner().getUsername())
+            );
         }
 
         @Test
         @DisplayName("ScheduleService#save() - Should throw UsernameNotFoundException when potential owner does not exist")
         void shouldThrowUsernameNotFound_whenPotentialOwnerOfNewScheduleDoesNotExist() {
+            when(userRepository.findByUsername(anyString()))
+                    .thenReturn(Optional.empty());
+
+            assertThrows(UsernameNotFoundException.class, () -> service.save(newSchedule, ""));
         }
 
         @Test
         @DisplayName("ScheduleService#save() - Should throw ResourceAlreadyExistException when selected user already has a schedule with selected name")
         void shouldThrowResourceAlreadyExist_whenPotentialNewScheduleAlreadyExist() {
+            when(userRepository.findByUsername(anyString()))
+                    .thenReturn(Optional.of(scheduleOwner));
+            when(queryRepository.existsByNameAndOwner(anyString(), any(User.class)))
+                    .thenReturn(true);
+
+            assertThrows(ResourceAlreadyExistsException.class, () -> service.save(newSchedule, ""));
         }
 
         @Test
         @DisplayName("ScheduleService#delete() - Should remove selected schedule when the owner sends the request")
         void shouldDeleteScheduleWhenOwnerSendsRequest() {
+            when(userRepository.findByUsername(anyString()))
+                    .thenReturn(Optional.of(scheduleOwner));
+            when(queryRepository.findById(anyLong()))
+                    .thenReturn(Optional.of(schedule1));
+            // default -> void
+            // when(commandRepository.delete(any(Schedule.class)));
+
+            assertDoesNotThrow(() -> service.delete(1L, ""));
         }
 
         @Test
         @DisplayName("ScheduleService#delete() - Should throw UsernameNotFoundException when potential owner does not exist")
         void shouldThrowUsernameNotFound_whenPotentialOwnerOfScheduleToDeleteDoesNotExist() {
+            when(userRepository.findByUsername(anyString()))
+                    .thenReturn(Optional.empty());
+
+            assertThrows(UsernameNotFoundException.class, () -> service.delete(1L, ""));
         }
 
         @Test
         @DisplayName("ScheduleService#delete() - Should throw EntityNotFoundException when schedule to delete does not exist")
-        void shouldThrowUsernameNotFound_whenScheduleToDeleteDoesNotExist() {
+        void shouldThrowEntityNotFound_whenScheduleToDeleteDoesNotExist() {
+            when(userRepository.findByUsername(anyString()))
+                    .thenReturn(Optional.of(scheduleOwner));
+            when(queryRepository.findById(anyLong()))
+                    .thenReturn(Optional.empty());
+
+            assertThrows(EntityNotFoundException.class, () -> service.delete(1L, ""));
         }
 
         @Test
         @DisplayName("ScheduleService#delete() - Should throw AccessDeniedException when a user other than the owner sent the request")
         void shouldThrowAccessDenied_whenNonOwnerSentDeleteRequest() {
+            when(userRepository.findByUsername(anyString()))
+                    .thenReturn(Optional.of(anotherUser));
+            when(queryRepository.findById(anyLong()))
+                    .thenReturn(Optional.of(schedule1));
+
+            assertThrows(AccessDeniedException.class, () -> service.delete(1L, ""));
         }
     }
 }
