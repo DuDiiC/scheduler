@@ -18,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,6 +111,16 @@ class ScheduleServiceTest {
 
             List<ScheduleResponse> response = service.getAll(Pageable.unpaged());
             assertEquals(2, response.size());
+        }
+
+        @Test
+        @DisplayName("ScheduleService#getAll(): Should return empty list when there are no schedules in the database")
+        void shouldReturnEmptyList_whenGettingAllFromEmptyDatabase() {
+            when(queryRepository.findAll(any(Pageable.class)))
+                    .thenReturn(new PageImpl<>(Collections.emptyList()));
+
+            List<ScheduleResponse> response = service.getAll(Pageable.unpaged());
+            assertTrue(response.isEmpty());
         }
 
         @Test
