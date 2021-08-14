@@ -212,7 +212,7 @@ class ScheduleServiceTest {
 
         @Test
         @DisplayName("ScheduleService#delete() - Should remove selected schedule when the owner sends the request")
-        void shouldDeleteScheduleWhenOwnerSendsRequest() {
+        void shouldDeleteSchedule_whenOwnerSendsRequest() {
             when(userRepository.findByUsername(anyString()))
                     .thenReturn(Optional.of(scheduleOwner));
             when(queryRepository.findById(anyLong()))
