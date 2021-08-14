@@ -6,7 +6,10 @@ import com.md.scheduler.configuration.api.errors.ResourceAlreadyExistsException;
 import com.md.scheduler.configuration.security.enums.AppUserRole;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ScheduleService.class)
@@ -208,8 +212,7 @@ class ScheduleServiceTest {
                     .thenReturn(Optional.of(scheduleOwner));
             when(queryRepository.findById(anyLong()))
                     .thenReturn(Optional.of(schedule1));
-            // default -> void
-            // when(commandRepository.delete(any(Schedule.class)));
+            doNothing().when(commandRepository).delete(any(Schedule.class));
 
             assertDoesNotThrow(() -> service.delete(1L, ""));
         }
