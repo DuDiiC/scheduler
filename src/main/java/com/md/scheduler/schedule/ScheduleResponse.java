@@ -2,9 +2,11 @@ package com.md.scheduler.schedule;
 
 import com.md.scheduler.commons.date_range.DateRange;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 @Schema(description = "An object that responds to all simple requests about schedules.")
 class ScheduleResponse {
 
