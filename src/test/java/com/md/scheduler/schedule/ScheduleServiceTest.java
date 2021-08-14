@@ -97,67 +97,77 @@ class ScheduleServiceTest {
     @DisplayName("Tests for queries")
     class ScheduleServiceQueriesTest {
 
-        @Test
-        @DisplayName("ScheduleService#getAll(): Should return all schedules when getting all")
-        void shouldReturnAllSchedules_whenGettingAll() {
-            when(queryRepository.findAll(any(Pageable.class)))
-                    .thenReturn(new PageImpl<>(List.of(schedule1, schedule2)));
+        @Nested
+        @DisplayName("getAll()")
+        class GetAllTest {
 
-            List<ScheduleResponse> response = service.getAll(Pageable.unpaged());
-            assertEquals(2, response.size());
+            @Test
+            @DisplayName("Should return all schedules when getting all")
+            void shouldReturnAllSchedules_whenGettingAll() {
+                when(queryRepository.findAll(any(Pageable.class)))
+                        .thenReturn(new PageImpl<>(List.of(schedule1, schedule2)));
+
+                List<ScheduleResponse> response = service.getAll(Pageable.unpaged());
+                assertEquals(2, response.size());
+            }
+
+            @Test
+            @DisplayName("Should return empty list when there are no schedules in the database")
+            void shouldReturnEmptyList_whenGettingAllFromEmptyDatabase() {
+                when(queryRepository.findAll(any(Pageable.class)))
+                        .thenReturn(new PageImpl<>(Collections.emptyList()));
+
+                List<ScheduleResponse> response = service.getAll(Pageable.unpaged());
+                assertTrue(response.isEmpty());
+            }
         }
 
-        @Test
-        @DisplayName("ScheduleService#getAll(): Should return empty list when there are no schedules in the database")
-        void shouldReturnEmptyList_whenGettingAllFromEmptyDatabase() {
-            when(queryRepository.findAll(any(Pageable.class)))
-                    .thenReturn(new PageImpl<>(Collections.emptyList()));
+        @Nested
+        @DisplayName("getById()")
+        class GetByIdTest {
 
-            List<ScheduleResponse> response = service.getAll(Pageable.unpaged());
-            assertTrue(response.isEmpty());
-        }
+            @Test
+            @DisplayName("Should return schedule by ID for owner")
+            void shouldReturnScheduleById_whenOwnerSentRequest() {
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.of(schedule1));
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.of(scheduleOwner));
 
-        @Test
-        @DisplayName("ScheduleService#getById(): Should return schedule by ID for owner")
-        void shouldReturnScheduleById_whenOwnerSentRequest() {
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(schedule1));
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.of(scheduleOwner));
+                ScheduleResponse response = service.getById(1L, "");
+                assertNotNull(response);
+            }
 
-            ScheduleResponse response = service.getById(1L, "");
-            assertNotNull(response);
-        }
+            @Test
+            @DisplayName("Should throw EntityNotFoundException when schedule does not exist")
+            void shouldThrowEntityNotFound_whenScheduleToGetDoesNotExist() {
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.empty());
 
-        @Test
-        @DisplayName("ScheduleService#getById(): Should throw EntityNotFoundException when schedule does not exist")
-        void shouldThrowEntityNotFound_whenScheduleToGetDoesNotExist() {
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.empty());
+                assertThrows(EntityNotFoundException.class, () -> service.getById(1L, ""));
+            }
 
-            assertThrows(EntityNotFoundException.class, () -> service.getById(1L, ""));
-        }
+            @Test
+            @DisplayName("Should throw UsernameNotFoundException when potential owner does not exist")
+            void shouldThrowUsernameNotFound_whenPotentialOwnerOfExistingScheduleDoesNotExist() {
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.of(schedule1));
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.empty());
 
-        @Test
-        @DisplayName("ScheduleService#getById(): Should throw UsernameNotFoundException when potential owner does not exist")
-        void shouldThrowUsernameNotFound_whenPotentialOwnerOfExistingScheduleDoesNotExist() {
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(schedule1));
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.empty());
+                assertThrows(UsernameNotFoundException.class, () -> service.getById(1L, ""));
+            }
 
-            assertThrows(UsernameNotFoundException.class, () -> service.getById(1L, ""));
-        }
+            @Test
+            @DisplayName("Should throw AccessDeniedException when a user other than the owner sent the request")
+            void shouldThrowAccessDenied_whenNonOwnerSentGetByIdRequest() {
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.of(schedule1));
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.of(anotherUser));
 
-        @Test
-        @DisplayName("ScheduleService#getById(): Should throw AccessDeniedException when a user other than the owner sent the request")
-        void shouldThrowAccessDenied_whenNonOwnerSentGetByIdRequest() {
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(schedule1));
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.of(anotherUser));
-
-            assertThrows(AccessDeniedException.class, () -> service.getById(1L, ""));
+                assertThrows(AccessDeniedException.class, () -> service.getById(1L, ""));
+            }
         }
     }
 
@@ -165,87 +175,97 @@ class ScheduleServiceTest {
     @DisplayName("Tests for commands")
     class ScheduleServiceCommandsTest {
 
-        @Test
-        @DisplayName("ScheduleService#save() - Should create new schedule based on DTO and owner name")
-        void shouldCreateNewSchedule_whenNewScheduleAndOwnerName() {
-            when(userRepository.findByUsername(scheduleOwner.getUsername()))
-                    .thenReturn(Optional.of(scheduleOwner));
-            when(queryRepository.existsByNameAndOwner(anyString(), any(User.class)))
-                    .thenReturn(false);
-            when(commandRepository.save(any(Schedule.class)))
-                    .thenAnswer(AdditionalAnswers.returnsFirstArg());
+        @Nested
+        @DisplayName("save()")
+        class SaveTest {
 
-            ScheduleResponse response = service.save(newSchedule, scheduleOwner.getUsername());
-            assertAll(
-                    () -> assertEquals(newSchedule.getName(), response.getName()),
-                    () -> assertEquals(newSchedule.getDescription(), response.getDescription()),
-                    () -> assertEquals(newSchedule.getStatus(), response.getStatus()),
-                    () -> assertEquals(newSchedule.getDateRange(), response.getDateRange()),
-                    () -> assertEquals(scheduleOwner.getUsername(), response.getOwner().getUsername())
-            );
+            @Test
+            @DisplayName("Should create new schedule based on DTO and owner name")
+            void shouldCreateNewSchedule_whenNewScheduleAndOwnerName() {
+                when(userRepository.findByUsername(scheduleOwner.getUsername()))
+                        .thenReturn(Optional.of(scheduleOwner));
+                when(queryRepository.existsByNameAndOwner(anyString(), any(User.class)))
+                        .thenReturn(false);
+                when(commandRepository.save(any(Schedule.class)))
+                        .thenAnswer(AdditionalAnswers.returnsFirstArg());
+
+                ScheduleResponse response = service.save(newSchedule, scheduleOwner.getUsername());
+                assertAll(
+                        () -> assertEquals(newSchedule.getName(), response.getName()),
+                        () -> assertEquals(newSchedule.getDescription(), response.getDescription()),
+                        () -> assertEquals(newSchedule.getStatus(), response.getStatus()),
+                        () -> assertEquals(newSchedule.getDateRange(), response.getDateRange()),
+                        () -> assertEquals(scheduleOwner.getUsername(), response.getOwner().getUsername())
+                );
+            }
+
+            @Test
+            @DisplayName("Should throw UsernameNotFoundException when potential owner does not exist")
+            void shouldThrowUsernameNotFound_whenPotentialOwnerOfNewScheduleDoesNotExist() {
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.empty());
+
+                assertThrows(UsernameNotFoundException.class, () -> service.save(newSchedule, ""));
+            }
+
+            @Test
+            @DisplayName("Should throw ResourceAlreadyExistException when selected user already has a schedule with selected name")
+            void shouldThrowResourceAlreadyExist_whenPotentialNewScheduleAlreadyExist() {
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.of(scheduleOwner));
+                when(queryRepository.existsByNameAndOwner(anyString(), any(User.class)))
+                        .thenReturn(true);
+
+                assertThrows(ResourceAlreadyExistsException.class, () -> service.save(newSchedule, ""));
+            }
         }
 
-        @Test
-        @DisplayName("ScheduleService#save() - Should throw UsernameNotFoundException when potential owner does not exist")
-        void shouldThrowUsernameNotFound_whenPotentialOwnerOfNewScheduleDoesNotExist() {
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.empty());
+        @Nested
+        @DisplayName("delete()")
+        class DeleteTest {
 
-            assertThrows(UsernameNotFoundException.class, () -> service.save(newSchedule, ""));
-        }
+            @Test
+            @DisplayName("Should remove selected schedule when the owner sends the request")
+            void shouldDeleteSchedule_whenOwnerSendsRequest() {
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.of(scheduleOwner));
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.of(schedule1));
+                doNothing().when(commandRepository).delete(any(Schedule.class));
 
-        @Test
-        @DisplayName("ScheduleService#save() - Should throw ResourceAlreadyExistException when selected user already has a schedule with selected name")
-        void shouldThrowResourceAlreadyExist_whenPotentialNewScheduleAlreadyExist() {
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.of(scheduleOwner));
-            when(queryRepository.existsByNameAndOwner(anyString(), any(User.class)))
-                    .thenReturn(true);
+                assertDoesNotThrow(() -> service.delete(1L, ""));
+            }
 
-            assertThrows(ResourceAlreadyExistsException.class, () -> service.save(newSchedule, ""));
-        }
+            @Test
+            @DisplayName("Should throw UsernameNotFoundException when potential owner does not exist")
+            void shouldThrowUsernameNotFound_whenPotentialOwnerOfScheduleToDeleteDoesNotExist() {
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.empty());
 
-        @Test
-        @DisplayName("ScheduleService#delete() - Should remove selected schedule when the owner sends the request")
-        void shouldDeleteSchedule_whenOwnerSendsRequest() {
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.of(scheduleOwner));
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(schedule1));
-            doNothing().when(commandRepository).delete(any(Schedule.class));
+                assertThrows(UsernameNotFoundException.class, () -> service.delete(1L, ""));
+            }
 
-            assertDoesNotThrow(() -> service.delete(1L, ""));
-        }
+            @Test
+            @DisplayName("Should throw EntityNotFoundException when schedule to delete does not exist")
+            void shouldThrowEntityNotFound_whenScheduleToDeleteDoesNotExist() {
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.of(scheduleOwner));
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.empty());
 
-        @Test
-        @DisplayName("ScheduleService#delete() - Should throw UsernameNotFoundException when potential owner does not exist")
-        void shouldThrowUsernameNotFound_whenPotentialOwnerOfScheduleToDeleteDoesNotExist() {
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.empty());
+                assertThrows(EntityNotFoundException.class, () -> service.delete(1L, ""));
+            }
 
-            assertThrows(UsernameNotFoundException.class, () -> service.delete(1L, ""));
-        }
+            @Test
+            @DisplayName("Should throw AccessDeniedException when a user other than the owner sent the request")
+            void shouldThrowAccessDenied_whenNonOwnerSentDeleteRequest() {
+                when(userRepository.findByUsername(anyString()))
+                        .thenReturn(Optional.of(anotherUser));
+                when(queryRepository.findById(anyLong()))
+                        .thenReturn(Optional.of(schedule1));
 
-        @Test
-        @DisplayName("ScheduleService#delete() - Should throw EntityNotFoundException when schedule to delete does not exist")
-        void shouldThrowEntityNotFound_whenScheduleToDeleteDoesNotExist() {
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.of(scheduleOwner));
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.empty());
-
-            assertThrows(EntityNotFoundException.class, () -> service.delete(1L, ""));
-        }
-
-        @Test
-        @DisplayName("ScheduleService#delete() - Should throw AccessDeniedException when a user other than the owner sent the request")
-        void shouldThrowAccessDenied_whenNonOwnerSentDeleteRequest() {
-            when(userRepository.findByUsername(anyString()))
-                    .thenReturn(Optional.of(anotherUser));
-            when(queryRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(schedule1));
-
-            assertThrows(AccessDeniedException.class, () -> service.delete(1L, ""));
+                assertThrows(AccessDeniedException.class, () -> service.delete(1L, ""));
+            }
         }
     }
 }
