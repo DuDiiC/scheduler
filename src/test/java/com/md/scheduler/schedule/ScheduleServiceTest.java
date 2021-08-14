@@ -89,15 +89,6 @@ class ScheduleServiceTest {
         );
     }
 
-    @AfterEach
-    void tearDown() {
-        newSchedule = null;
-        schedule1 = null;
-        schedule2 = null;
-        scheduleOwner = null;
-        anotherUser = null;
-    }
-
     @Nested
     @DisplayName("Tests for queries")
     class ScheduleServiceQueriesTest {
