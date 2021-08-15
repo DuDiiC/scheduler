@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/scheduler_db'
+    driverClassName: org.postgresql.Driver
+    username: 'dev'
+    password: 'password123'
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+hibernate:
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
