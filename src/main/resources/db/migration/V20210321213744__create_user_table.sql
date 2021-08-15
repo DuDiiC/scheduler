@@ -1,11 +1,11 @@
-drop table if exists "users";
+DROP TABLE IF EXISTS users;
 
-create table "users"
+CREATE TABLE users
 (
-    id       bigint primary key auto_increment,
-    email    varchar2(100) not null,
-    username varchar2(100) not null,
-    password varchar2(255) not null,
-    role     varchar2(100) not null,
-    enabled  bit           not null
+    id       BIGSERIAL PRIMARY KEY,
+    email    VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role     VARCHAR(100) NOT NULL,
+    enabled  BOOLEAN      NOT NULL
 )

@@ -1,13 +1,9 @@
 spring:
-  h2:
-    console:
-      enabled: true
-      path: '/h2-database-console'
   datasource:
-    url: 'jdbc:h2:file:./data/scheduler-h2-db;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE'
-    driverClassName: org.h2.Driver
-    username: 'sa'
-    password: ''
+    url: 'jdbc:postgresql://localhost:5432/scheduler_db'
+    driverClassName: org.postgresql.Driver
+    username: 'dev'
+    password: 'password123'
   jpa:
     show-sql: true
     properties:

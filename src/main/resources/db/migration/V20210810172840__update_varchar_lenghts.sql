@@ -1,4 +1,4 @@
-alter table "schedules"
-    alter column "description" VARCHAR2(5000);
-alter table "schedules"
-    alter column "image_path" VARCHAR2(1000);
+ALTER TABLE schedules
+    ALTER COLUMN description TYPE VARCHAR(5000);
+ALTER TABLE schedules
+    ALTER COLUMN image_path TYPE VARCHAR(1000);

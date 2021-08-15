@@ -1,19 +1,16 @@
-drop table if exists "schedules";
+DROP TABLE IF EXISTS schedules;
 
-create table "schedules"
+CREATE TABLE schedules
 (
-    `id`             bigint primary key auto_increment,
-    `name`           varchar2(100) not null,
-    `description`    varchar2(255),
-    `start_of_range` date,
-    `end_of_range`   date,
-    `status`         varchar2(50)  not null,
-    `image_path`     varchar(255)  not null,
-    `owner_id`       bigint        not null,
-
-    `created_on`     timestamp     not null default current_timestamp,
-    `updated_on`     timestamp     not null default current_timestamp,
-
-    foreign key (`owner_id`)
-        references "users" (`id`)
+    id             BIGSERIAL PRIMARY KEY,
+    name           VARCHAR(100)                        NOT NULL,
+    description    VARCHAR(255),
+    start_of_range DATE,
+    end_of_range   DATE,
+    status         VARCHAR(50)                         NOT NULL,
+    image_path     VARCHAR(255)                        NOT NULL,
+    created_on     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_on     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    owner_id       BIGINT                              NOT NULL
+        CONSTRAINT schedule_owner REFERENCES users (id)
 );
