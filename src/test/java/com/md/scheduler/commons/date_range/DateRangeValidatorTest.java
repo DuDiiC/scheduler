@@ -23,7 +23,9 @@ class DateRangeValidatorTest {
     @Nested
     @DisplayName("Valid cases")
     class DateRangeIsValidTest {
+
         @ParameterizedTest
+        @DisplayName("DateRange should be valid when start date is before end date")
         @CsvSource({
                 "1999-12-31,2000-01-01",
                 "2000-01-01,2000-01-02",
@@ -40,18 +42,21 @@ class DateRangeValidatorTest {
         }
 
         @Test
+        @DisplayName("DateRange should be valid when start and end dates are null")
         void shouldBeValid_whenBothDatesAreNull() {
             DateRange validDateRange = new DateRange(null, null);
             assertTrue(isValid(validDateRange));
         }
 
         @Test
+        @DisplayName("DateRange should be valid when start date is null")
         void shouldBeValid_whenStartDateIsNull() {
             DateRange validDateRange = new DateRange(null, LocalDate.parse(EXAMPLE_DATE));
             assertTrue(isValid(validDateRange));
         }
 
         @Test
+        @DisplayName("DateRange should be valid when end date is null")
         void shouldBeValid_whenEndDateIsNull() {
             DateRange validDateRange = new DateRange(LocalDate.parse(EXAMPLE_DATE), null);
             assertTrue(isValid(validDateRange));
@@ -63,6 +68,7 @@ class DateRangeValidatorTest {
     class DateRangeIsNotValidTest {
 
         @ParameterizedTest
+        @DisplayName("DateRange should be invalid when end date is before start date")
         @CsvSource({
                 "2000-01-01,1999-12-31",
                 "2000-01-02,2000-01-01",
@@ -79,6 +85,7 @@ class DateRangeValidatorTest {
         }
 
         @Test
+        @DisplayName("DateRange should be invalid when start and end date are the same")
         void shouldNotBeValid_whenStartAndEndDateAreTheSame() {
             DateRange invalidDateRange = new DateRange(
                     LocalDate.parse(EXAMPLE_DATE),
