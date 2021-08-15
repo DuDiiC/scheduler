@@ -56,14 +56,19 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.enabled true
+        xml.destination file("${project.buildDir}/reports/jacoco.xml")
+    }
 }
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "DuDiiC_scheduler"
-        property "sonar.organization", "dudiic"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.coverage.jacoco.xmlReportPaths", "app/build/jacoco/jacoco.xml"
-        property "sonar.junit.reportsPath", "app/build/test-results/*/TEST-*.xml"
+        property 'sonar.projectKey', 'DuDiiC_scheduler'
+        property 'sonar.organization', 'dudiic'
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.core.codeCoveragePlugin', 'jacoco'
+        property 'sonar.coverage.jacoco.xmlReportPaths', "${project.buildDir}/reports/jacoco.xml"
+        property "sonar.junit.reportsPath", "${project.buildDir}/test-results/*/TEST-*.xml"
     }
 }
