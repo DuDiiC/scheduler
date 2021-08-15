@@ -1,5 +1,7 @@
 # Scheduler
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=DuDiiC_scheduler)
+
 [![Scheduler CI](https://github.com/DuDiiC/scheduler/actions/workflows/build_scheduler.yml/badge.svg)](https://github.com/DuDiiC/scheduler/actions)
 
 App for managing the timetable
