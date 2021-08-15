@@ -3,6 +3,8 @@ name: Scheduler CI
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
   pull_request:
     branches: [ master ]
   # Allows you to run this workflow manually from the Actions tab
