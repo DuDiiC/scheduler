@@ -4,7 +4,7 @@ spring:
       enabled: true
       path: '/h2-database-console'
   datasource:
-    url: 'jdbc:h2:file:./data/scheduler-h2-db;MODE=MySQL;DATABASE_TO_LOWER=TRUE'
+    url: 'jdbc:h2:file:./data/scheduler-h2-db;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE'
     driverClassName: org.h2.Driver
     username: 'sa'
     password: ''
@@ -14,7 +14,7 @@ spring:
       hibernate:
         format_sql: true
 hibernate:
-  dialect: org.hibernate.dialect.H2Dialect
+  dialect: org.hibernate.dialect.PostgreSQLDialect
 
 # actuator
 management:

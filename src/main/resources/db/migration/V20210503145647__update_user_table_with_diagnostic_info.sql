@@ -1,5 +1,6 @@
-alter table "users"
-    add column (
-        `created_on` timestamp not null default current_timestamp,
-        `updated_on` timestamp not null default current_timestamp
-        );
+ALTER TABLE users
+    ADD COLUMN
+        created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE users
+    ADD COLUMN
+        updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
