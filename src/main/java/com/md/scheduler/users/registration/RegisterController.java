@@ -1,18 +1,17 @@
 package com.md.scheduler.users.registration;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.md.scheduler.configuration.api.errors.ResourceAlreadyExistsException;
+import com.md.scheduler.users.UserInfo;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.io.Serializable;
+@RestController
+@RequiredArgsConstructor
+class RegisterController implements RegisterApi {
 
-@RequestMapping("/api/v1")
-@Tag(name = "registration", description = "registration API to create new user")
-interface RegisterController {
+    private final RegisterService registerService;
 
-    @PostMapping("/register")
-    ResponseEntity<Serializable> register(@RequestBody @Valid NewUser newUser) throws UserAlreadyExistAuthenticationException;
+    public UserInfo register(NewUser newUser) throws ResourceAlreadyExistsException {
+        return registerService.register(newUser);
+    }
 }

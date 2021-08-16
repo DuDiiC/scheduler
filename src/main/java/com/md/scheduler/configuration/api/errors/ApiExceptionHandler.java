@@ -1,6 +1,5 @@
 package com.md.scheduler.configuration.api.errors;
 
-import com.md.scheduler.users.registration.UserAlreadyExistAuthenticationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,19 +48,6 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 entityNotFoundException,
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND
-        );
-    }
-
-    @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
-    ResponseEntity<Object> handler(UserAlreadyExistAuthenticationException ex) {
-        return new ResponseEntity<>(
-                ApiError.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.CONFLICT.toString())
-                        .message(ex.getMessage())
-                        .build(),
-                new HttpHeaders(),
-                HttpStatus.CONFLICT
         );
     }
 
