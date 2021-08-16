@@ -29,15 +29,16 @@ class RestAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
-        ServletServerHttpResponse res = new ServletServerHttpResponse(response);
-        res.setStatusCode(HttpStatus.FORBIDDEN);
-        res.getServletResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        res.getBody().write(mapper.writeValueAsString(
-                ApiError.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.FORBIDDEN.toString())
-                        .message("\uD835\uDD50\uD835\uDD60\uD835\uDD66 \uD835\uDD64\uD835\uDD59\uD835\uDD52\uD835\uDD5D\uD835\uDD5D \uD835\uDD5F\uD835\uDD60\uD835\uDD65 \uD835\uDD61\uD835\uDD52\uD835\uDD64\uD835\uDD64")
-                        .build()
-        ).getBytes());
+        try (ServletServerHttpResponse res = new ServletServerHttpResponse(response)) {
+            res.setStatusCode(HttpStatus.FORBIDDEN);
+            res.getServletResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+            res.getBody().write(mapper.writeValueAsString(
+                    ApiError.builder()
+                            .timestamp(LocalDateTime.now())
+                            .status(HttpStatus.FORBIDDEN.toString())
+                            .message("\uD835\uDD50\uD835\uDD60\uD835\uDD66 \uD835\uDD64\uD835\uDD59\uD835\uDD52\uD835\uDD5D\uD835\uDD5D \uD835\uDD5F\uD835\uDD60\uD835\uDD65 \uD835\uDD61\uD835\uDD52\uD835\uDD64\uD835\uDD64")
+                            .build()
+            ).getBytes());
+        }
     }
 }

@@ -29,15 +29,16 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException exception)
             throws IOException, ServletException {
-        ServletServerHttpResponse res = new ServletServerHttpResponse(response);
-        res.setStatusCode(HttpStatus.UNAUTHORIZED);
-        res.getServletResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        res.getBody().write(mapper.writeValueAsString(
-                ApiError.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.UNAUTHORIZED.toString())
-                        .message(exception.getMessage())
-                        .build()
-        ).getBytes());
+        try (ServletServerHttpResponse res = new ServletServerHttpResponse(response)) {
+            res.setStatusCode(HttpStatus.UNAUTHORIZED);
+            res.getServletResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+            res.getBody().write(mapper.writeValueAsString(
+                    ApiError.builder()
+                            .timestamp(LocalDateTime.now())
+                            .status(HttpStatus.UNAUTHORIZED.toString())
+                            .message(exception.getMessage())
+                            .build()
+            ).getBytes());
+        }
     }
 }
