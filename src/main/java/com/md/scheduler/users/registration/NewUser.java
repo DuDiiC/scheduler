@@ -12,14 +12,14 @@ class NewUser {
 
     @NotNull(message = "email is required")
     @Email(message = "email must be in correct format")
-    String email;
+    private String email;
 
     @NotNull(message = "username is required")
     @Size(
             min = 5, max = 100,
             message = "username must be in correct size (between 5 and 100 chars"
     )
-    String username;
+    private String username;
 
     @NotNull(message = "password is required")
     @Size(
@@ -30,5 +30,5 @@ class NewUser {
     @Pattern(regexp = ".*[A-Z].*", message = "password must contains at least one lowercase")
     @Pattern(regexp = ".*\\d.*", message = "password must contains at least one digit")
     @Pattern(regexp = ".*[!@#$%&*()_+=|<>?{}\\\\[\\\\]~-].*", message = "password must contains at least one special character")
-    String password;
+    private String password;
 }

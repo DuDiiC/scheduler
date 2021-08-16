@@ -21,17 +21,17 @@ class RegisterService {
     @Transactional
     public UserInfo register(NewUser newUser) throws ResourceAlreadyExistsException {
 
-        if (repository.existsByEmail(newUser.email)) {
-            throw new ResourceAlreadyExistsException("User with email " + newUser.email + " already exists");
+        if (repository.existsByEmail(newUser.getEmail())) {
+            throw new ResourceAlreadyExistsException("User with email " + newUser.getEmail() + " already exists");
         } else if (repository.existsByUsername(newUser.getUsername())) {
-            throw new ResourceAlreadyExistsException("User with username " + newUser.username + " already exists");
+            throw new ResourceAlreadyExistsException("User with username " + newUser.getUsername() + " already exists");
         }
 
         return new UserInfo(
                 repository.save(new User(
-                        newUser.username,
-                        passwordEncoder.encode(newUser.password),
-                        newUser.email,
+                        newUser.getUsername(),
+                        passwordEncoder.encode(newUser.getPassword()),
+                        newUser.getEmail(),
                         AppUserRole.ROLE_USER,
                         true
                 ))
