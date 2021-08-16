@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -21,7 +22,6 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final ObjectMapper mapper;
     private final RestAuthenticationSuccessHandler authSuccessHandler;
-    private final RestAuthenticationFailureHandler authFailureHandler;
     private final JwtConfigProperties jwtConfigProperties;
 
     @Bean
@@ -66,7 +66,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     JsonObjectAuthenticationFilter authenticationFilter() throws Exception {
         var authFilter = new JsonObjectAuthenticationFilter(mapper);
         authFilter.setAuthenticationSuccessHandler(authSuccessHandler);
-        authFilter.setAuthenticationFailureHandler(authFailureHandler);
+        authFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler());
         authFilter.setAuthenticationManager(super.authenticationManager());
         authFilter.setFilterProcessesUrl("/api/v1/login");
         return authFilter;
