@@ -177,5 +177,67 @@ class RegisterApiTest {
                         .andExpect(jsonPath("$..field", hasItem("username")));
             }
         }
+
+        @Nested
+        @DisplayName("password")
+        class PasswordTest {
+
+            @ParameterizedTest
+            @DisplayName("Valid cases")
+            @ValueSource(strings = {"Password1!", "myGoodpass.!1"})
+            void shouldBeValidPassword(String password) throws Exception {
+                String newValidUser = String.format("""
+                        {
+                            "email": "email@email.com",
+                            "username": "username",
+                            "password": "%s"
+                        }
+                        """, password);
+                UserInfo userInfo = new UserInfo(
+                        1L,
+                        "email",
+                        "username",
+                        AppUserRole.ROLE_USER,
+                        true
+                );
+                when(service.register(any(NewUser.class)))
+                        .thenReturn(userInfo);
+
+                mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newValidUser))
+                        .andDo(print())
+                        .andExpect(status().isCreated());
+            }
+
+            @ParameterizedTest
+            @DisplayName("Invalid cases")
+            @ValueSource(strings = {
+                    "onlylowercaseletters", "ONLYUPPERCASELETTERS", "OnlyLetters",
+                    "123456789", "OnlyLettersAndNum123", "OnlylettersAndSpecials!?-",
+                    "?!-deas22"
+            })
+            void shouldBeInvalidPassword(String password) throws Exception {
+                String newValidUser = String.format("""
+                        {
+                            "email": "email@email.com",
+                            "username": "username",
+                            "password": "%s"
+                        }
+                        """, password);
+
+                mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newValidUser))
+                        .andDo(print())
+                        .andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$").exists())
+                        .andExpect(jsonPath("$.timestamp", is(not(emptyString()))))
+                        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.toString())))
+                        .andExpect(jsonPath("$..field", hasItem("password")));
+            }
+        }
     }
 }

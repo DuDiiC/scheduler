@@ -31,6 +31,6 @@ class NewUser {
     @Pattern(regexp = ".*[a-z].*", message = "password must contains at least one lowercase")
     @Pattern(regexp = ".*[A-Z].*", message = "password must contains at least one lowercase")
     @Pattern(regexp = ".*\\d.*", message = "password must contains at least one digit")
-    @Pattern(regexp = ".*[!@#$%&*()_+=|<>?{}\\\\[\\\\]~-].*", message = "password must contains at least one special character")
+    @Pattern(regexp = ".*[!@#$%&*()_+=|<>?{}\\[\\]~-].*", message = "password must contains at least one special character")
     private String password;
 }
