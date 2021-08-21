@@ -21,7 +21,7 @@ class NewUser {
     @NotNull(message = "username is required")
     @Size(
             min = 5, max = 100,
-            message = "username must be in correct size (between 5 and 100 chars"
+            message = "username must be in correct size (between 5 and 100 chars)"
     )
     private String username;
 
