@@ -1,5 +1,6 @@
 package com.md.scheduler.users.registration;
 
+import com.md.scheduler.configuration.api.errors.ResourceAlreadyExistsException;
 import com.md.scheduler.configuration.security.enums.AppUserRole;
 import com.md.scheduler.users.User;
 import com.md.scheduler.users.UserInfo;
@@ -18,34 +19,22 @@ class RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserInfo register(NewUser newUser) throws UserAlreadyExistAuthenticationException {
-        checkUserUnique(newUser);
+    public UserInfo register(NewUser newUser) throws ResourceAlreadyExistsException {
+
+        if (repository.existsByEmail(newUser.getEmail())) {
+            throw new ResourceAlreadyExistsException("User with email " + newUser.getEmail() + " already exists");
+        } else if (repository.existsByUsername(newUser.getUsername())) {
+            throw new ResourceAlreadyExistsException("User with username " + newUser.getUsername() + " already exists");
+        }
 
         return new UserInfo(
                 repository.save(new User(
-                        newUser.username,
-                        passwordEncoder.encode(newUser.password),
-                        newUser.email,
+                        newUser.getUsername(),
+                        passwordEncoder.encode(newUser.getPassword()),
+                        newUser.getEmail(),
                         AppUserRole.ROLE_USER,
                         true
                 ))
         );
-    }
-
-    private void checkUserUnique(NewUser newUser) throws UserAlreadyExistAuthenticationException {
-        checkUsernameUnique(newUser.username);
-        checkEmailUnique(newUser.email);
-    }
-
-    private void checkUsernameUnique(String username) throws UserAlreadyExistAuthenticationException {
-        if (repository.existsByUsername(username)) {
-            throw new UserAlreadyExistAuthenticationException("User with username " + username + " already exists");
-        }
-    }
-
-    private void checkEmailUnique(String email) throws UserAlreadyExistAuthenticationException {
-        if (repository.existsByEmail(email)) {
-            throw new UserAlreadyExistAuthenticationException("User with email " + email + " already exists");
-        }
     }
 }
