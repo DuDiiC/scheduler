@@ -4,28 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 class NewUser {
 
-    @NotNull(message = "email is required")
+    @NotBlank(message = "email is required")
     @Email(message = "email must be in correct format")
     private String email;
 
-    @NotNull(message = "username is required")
+    @NotBlank(message = "username is required")
     @Size(
-            min = 5, max = 100,
-            message = "username must be in correct size (between 5 and 100 chars)"
+            min = 5, max = 50,
+            message = "username must be in correct size (between 5 and 50 chars)"
     )
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "username can only consist of alphanumeric characters")
     private String username;
 
-    @NotNull(message = "password is required")
+    @NotBlank(message = "password is required")
     @Size(
             min = 8, max = 24,
             message = "password must be 8-24 characters long"

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -116,5 +119,63 @@ class RegisterApiTest {
     @DisplayName("validation")
     class ValidationTest {
 
+        @Nested
+        @DisplayName("username")
+        class UsernameTest {
+
+            @ParameterizedTest
+            @DisplayName("Valid cases")
+            @ValueSource(strings = {"user1", "1user", "1USER1", "ourFirstUser", "veryLongUserNameButStillShorterThan50"})
+            void shouldBeValidUsername(String username) throws Exception {
+                String newValidUser = String.format("""
+                        {
+                            "email": "email@email.com",
+                            "username": "%s",
+                            "password": "Password1?"
+                        }
+                        """, username);
+                UserInfo userInfo = new UserInfo(
+                        1L,
+                        "email",
+                        "username",
+                        AppUserRole.ROLE_USER,
+                        true
+                );
+                when(service.register(any(NewUser.class)))
+                        .thenReturn(userInfo);
+
+                mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newValidUser))
+                        .andDo(print())
+                        .andExpect(status().isCreated());
+            }
+
+            @ParameterizedTest
+            @DisplayName("Invalid cases")
+            @ValueSource(strings = {"", "user", "user!", "1_USER_1", "ourFirst?User",
+                    "veryLongUserNaaaaaaaaaaaaaaaaaaaaaaaaaaaameLongerThan50"})
+            void shouldBeInvalidUsername(String username) throws Exception {
+                String newValidUser = String.format("""
+                        {
+                            "email": "email@email.com",
+                            "username": "%s",
+                            "password": "Password1?"
+                        }
+                        """, username);
+
+                mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newValidUser))
+                        .andDo(print())
+                        .andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$").exists())
+                        .andExpect(jsonPath("$.timestamp", is(not(emptyString()))))
+                        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.toString())))
+                        .andExpect(jsonPath("$..field", hasItem("username")));
+            }
+        }
     }
 }
